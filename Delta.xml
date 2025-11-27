@@ -1,11 +1,9 @@
 <mujoco model="Delta">
-  <compiler angle="radian" meshdir="meshes"/>
-  <option timestep="0.0001" gravity="0 0 -9.81" integrator="implicit" iterations="100" density="1" viscosity="1e-5"/>
-
   <!-- <option>
       <flag contact="disable"/>
   </option> -->
-
+  <compiler angle="radian" meshdir="meshes"/>
+  <option timestep="0.0001" gravity="0 0 -9.81" integrator="implicit" iterations="100" density="1" viscosity="1e-5"/>
 
   <default>
     <joint type="hinge" frictionloss="0.0001" damping='0.00005' limited="true" range="-3.14 3.14"/>
@@ -42,36 +40,45 @@
     <mesh name="left_arm_link3" file="left_arm_link3.STL"/>
     <mesh name="left_hinge_link3" file="left_hinge_link3.STL"/>
     <mesh name="left_end_link3" file="left_end_link3.STL"/>
-    <texture name="grid" type="2d" builtin="checker" rgb1=".1 .2 .3" rgb2=".2 .3 .4" width="300" height="300"/>
-    <material name="grid" texture="grid" texrepeat="8 8" reflectance=".2"/>
+    <texture name="grid" type="2d" builtin="checker" rgb1=".1 .2 .3" rgb2=".2 .3 .4" width="100" height="100"/>
+    <material name="grid" texture="grid" texrepeat="5 5" reflectance="0.0"/>
   </asset>
 
   <worldbody>
-    <geom pos="0 0 -.4" size="1.2 1.2 .01" type="plane" material="grid"/>
-    <light pos="0 0 1."/>
-    <body name="base_platform">
+    <!-- This is the floor. -->
+    <geom pos="0 0 0" size="0 0 0.05" type="plane" material="grid"/>
+    
+    <light pos="0 0 10."/>
+
+
+    <body name="UAV_Delta_platform" pos="0 0 0.13271" quat = "1. 0. 0. 0">
       <freejoint />
-      <geom name="core" type="box" pos="0 0 0.04" quat = "1. 0. 0. 0" size="0.06 0.035 0.025"  rgba="0.3 0.3 0.8 1" mass = ".2"/>
-			<geom name="a00" type="box" pos=".071 0.071 0.04" size="0.15 0.01 0.0025"  quat = ".924 0.0 0.0 0.383" rgba="0.3 0.3 0.8 1" mass = ".025"/>
-			<geom name="a10" type="box" pos=".071 -0.071 0.04" size="0.15 0.01 0.0025"  quat = ".383 0.0 0.0 0.924" rgba="0.3 0.3 0.8 1" mass = ".025"/>
-			<geom name="a20" type="box" pos="-0.071 -0.071 0.04" size="0.15 0.01 0.0025"  quat = "-.383 0.0 0.0 0.924" rgba="0.3 0.3 0.8 1" mass = ".025"/>
-			<geom name="a30" type="box" pos="-.071 0.071 0.04" size="0.15 0.01 0.0025"  quat = ".924 0.0 0.0 -0.383" rgba="0.3 0.3 0.8 1" mass = ".025"/>
+      <body name="UAV_body" pos="0 0 0.04" quat = "1. 0. 0. 0">
+        <site name="imu"/>
+        <site name="UAV_center" pos=" 0 0 0"  size="0.01"  quat = "1.0 0.0 0.0 0." rgba="0.8 0.8 0.3 1"/>
+        <geom name="core" type="box" pos="0 0 0" quat = "1. 0. 0. 0" size="0.06 0.035 0.025"  rgba="0.3 0.3 0.3 0.3" mass = ".2"/>
+        <geom name="a00" type="box" pos=".071 0.071 0" size="0.15 0.01 0.0025"  quat = ".924 0.0 0.0 0.383" rgba="0.3 0.3 0.8 1" mass = ".025"/>
+        <geom name="a10" type="box" pos=".071 -0.071 0" size="0.15 0.01 0.0025"  quat = ".383 0.0 0.0 0.924" rgba="0.3 0.3 0.8 1" mass = ".025"/>
+        <geom name="a20" type="box" pos="-0.071 -0.071 0" size="0.15 0.01 0.0025"  quat = "-.383 0.0 0.0 0.924" rgba="0.3 0.3 0.8 1" mass = ".025"/>
+        <geom name="a30" type="box" pos="-.071 0.071 0" size="0.15 0.01 0.0025"  quat = ".924 0.0 0.0 -0.383" rgba="0.3 0.3 0.8 1" mass = ".025"/>
 
-      <site name="motor1" type="cylinder" pos=" 0.18  0.18 0.05"  size="0.01 0.0025"  quat = "1.0 0.0 0.0 0." rgba="0.3 0.8 0.3 1"/>
-      <site name="motor2" type="cylinder" pos=" 0.18 -0.18 0.05"  size="0.01 0.0025"  quat = "1.0 0.0 0.0 0." rgba="0.3 0.8 0.3 1"/>
-      <site name="motor3" type="cylinder" pos="-0.18 -0.18 0.05"  size="0.01 0.0025"  quat = "1.0 0.0 0.0 0." rgba="0.3 0.8 0.3 1"/>
-      <site name="motor4" type="cylinder" pos="-0.18  0.18 0.05"  size="0.01 0.0025"  quat = "1.0 0.0 0.0 0." rgba="0.3 0.8 0.3 1"/>
+        <site name="motor1" type="cylinder" pos=" 0.18  0.18 0.01"  size="0.01 0.0025"  quat = "1.0 0.0 0.0 0." rgba="0.3 0.8 0.3 1"/>
+        <site name="motor2" type="cylinder" pos=" 0.18 -0.18 0.01"  size="0.01 0.0025"  quat = "1.0 0.0 0.0 0." rgba="0.3 0.8 0.3 1"/>
+        <site name="motor3" type="cylinder" pos="-0.18 -0.18 0.01"  size="0.01 0.0025"  quat = "1.0 0.0 0.0 0." rgba="0.3 0.8 0.3 1"/>
+        <site name="motor4" type="cylinder" pos="-0.18  0.18 0.01"  size="0.01 0.0025"  quat = "1.0 0.0 0.0 0." rgba="0.3 0.8 0.3 1"/>
 
-<!-- Thruster geometries for collisions since site's are excluded from collision checking -->
-      <geom name="thruster0" type="cylinder" pos=" 0.18  0.18  0.05" size="0.1 0.0025"  quat = "1.0 0.0 0.0 0." rgba="0.3 0.8 0.3 1" mass = ".025"/>
-      <geom name="thruster1" type="cylinder" pos=" 0.18  -0.18  0.05" size="0.1 0.0025"  quat = "1.0 0.0 0.0 0." rgba="0.3 0.8 0.3 1" mass = ".025"/>
-      <geom name="thruster2" type="cylinder" pos=" -0.18  -0.18  0.05" size="0.1 0.0025"  quat = "1.0 0.0 0.0 0." rgba="0.3 0.8 0.3 1" mass = ".025"/>
-      <geom name="thruster3" type="cylinder" pos=" -0.18  0.18  0.05" size="0.1 0.0025"  quat = "1.0 0.0 0.0 0." rgba="0.3 0.8 0.3 1" mass = ".025"/>
-
+        <!-- Thruster geometries for collisions since site's are excluded from collision checking -->
+        <geom name="prop1" type="cylinder" pos=" 0.18  0.18  0.01" size="0.1 0.0025"  quat = "1.0 0.0 0.0 0." rgba="1 0 0 1" mass = ".025"/>
+        <geom name="prop2" type="cylinder" pos=" 0.18  -0.18  0.01" size="0.1 0.0025"  quat = "1.0 0.0 0.0 0." rgba="0 0.3 1 1" mass = ".025"/>
+        <geom name="prop3" type="cylinder" pos=" -0.18  -0.18  0.01" size="0.1 0.0025"  quat = "1.0 0.0 0.0 0." rgba="1 0 0.8 1" mass = ".025"/>
+        <geom name="prop4" type="cylinder" pos=" -0.18  0.18  0.01" size="0.1 0.0025"  quat = "1.0 0.0 0.0 0." rgba="0.3 0.8 0.3 1" mass = ".025"/>
+      </body>
       <camera name="track" pos="0 -1. .3" xyaxes="1 0 0 0 1 2" mode="track"/>
-
-      <geom type="mesh" contype="0" conaffinity="0" group="1" density="1" rgba="0.57255 1 0.27059 1" mesh="base_link"/>
-      <geom type="mesh" rgba="0.57255 1 0.27059 1" mesh="base_link"/>
+      <body name="Delta_base_body">
+        <site name="Delta_base_center" pos=" 0 0 0"  size="0.01"  quat = "1.0 0.0 0.0 0." rgba="0.8 0.8 0.3 1"/>
+        <geom type="mesh" contype="0" conaffinity="0" group="1" density="1" rgba="0.57255 1 0.27059 1" mesh="base_link"/>
+        <geom type="mesh" rgba="0.57255 1 0.27059 1" mesh="base_link"/>
+      </body>  
       <!-- <geom pos="0 0 -0.13271" quat="1 0 0 0" type="mesh" contype="0" conaffinity="0" group="1" density="1" rgba="0.79216 0.81961 0.93333 1" mesh="end_platform"/>
       <geom pos="0 0 -0.13271" quat="1 0 0 0" type="mesh" rgba="0.79216 0.81961 0.93333 1" mesh="end_platform"/> -->
       <body name="motor_arm_link1" pos="0.074577 0 0">
@@ -97,7 +104,7 @@
               <body name="right_end_link1">
                 <inertial pos="-0.013549 4.0775e-05 -4.5973e-05" quat="0.306307 0.63732 0.273553 0.65205" mass="0.0012596" diaginertia="3.85901e-08 2.95879e-08 2.3009e-08"/>
                 <joint name="right_end_joint1" pos="0 0 0" axis="-1 0 0"  />
-                <geom type="mesh" contype="0" conaffinity="0" group="1" density="100" rgba="0.50196 0.50196 1 1" mesh="right_end_link1"/>
+                <geom type="mesh" contype="0" conaffinity="0" group="1" density="1" rgba="0.50196 0.50196 1 1" mesh="right_end_link1"/>
                 <geom type="mesh" rgba="0.50196 0.50196 1 1" mesh="right_end_link1"/>
               </body>
             </body>
@@ -121,7 +128,7 @@
               <body name="left_end_link1">
                 <inertial pos="0.013549 4.0775e-05 -4.5973e-05" quat="0.273553 0.65205 0.306307 0.63732" mass="0.0012596" diaginertia="3.85901e-08 2.95879e-08 2.3009e-08"/>
                 <joint name="left_end_joint1" pos="0 0 0" axis="1 0 0"/>
-                <geom type="mesh" contype="0" conaffinity="0" group="1" density="100" rgba="0 1 1 1" mesh="left_end_link1"/>
+                <geom type="mesh" contype="0" conaffinity="0" group="1" density="1" rgba="0 1 1 1" mesh="left_end_link1"/>
                 <geom type="mesh" rgba="0 1 1 1" mesh="left_end_link1"/>
               </body>
             </body>
@@ -151,7 +158,7 @@
               <body name="right_end_link2">
                 <inertial pos="-0.013549 4.0775e-05 -4.5973e-05" quat="0.306307 0.63732 0.273553 0.65205" mass="0.0012596" diaginertia="3.85901e-08 2.95879e-08 2.3009e-08"/>
                 <joint name="right_end_joint2" pos="0 0 0" axis="-1 0 0"/>
-                <geom type="mesh" contype="0" conaffinity="0" group="1" density="100" rgba="0.50196 0.50196 1 1" mesh="right_end_link2"/>
+                <geom type="mesh" contype="0" conaffinity="0" group="1" density="1" rgba="0.50196 0.50196 1 1" mesh="right_end_link2"/>
                 <geom type="mesh" rgba="0.50196 0.50196 1 1" mesh="right_end_link2"/>
               </body>
             </body>
@@ -175,7 +182,7 @@
               <body name="left_end_link2">
                 <inertial pos="0.013549 4.0775e-05 -4.5973e-05" quat="0.273553 0.65205 0.306307 0.63732" mass="0.0012596" diaginertia="3.85901e-08 2.95879e-08 2.3009e-08"/>
                 <joint name="left_end_joint2" pos="0 0 0" axis="1 0 0"/>
-                <geom type="mesh" contype="0" conaffinity="0" group="1" density="100" rgba="0 1 1 1" mesh="left_end_link2"/>
+                <geom type="mesh" contype="0" conaffinity="0" group="1" density="1" rgba="0 1 1 1" mesh="left_end_link2"/>
                 <geom type="mesh" rgba="0 1 1 1" mesh="left_end_link2"/>
               </body>
             </body>
@@ -205,7 +212,7 @@
               <body name="right_end_link3">
                 <inertial pos="-0.013549 4.0775e-05 -4.5973e-05" quat="0.306307 0.63732 0.273553 0.65205" mass="0.0012596" diaginertia="3.85901e-08 2.95879e-08 2.3009e-08"/>
                 <joint name="right_end_joint3" pos="0 0 0" axis="-1 0 0"/>
-                <geom type="mesh" contype="0" conaffinity="0" group="1" density="100" rgba="0.50196 0.50196 1 1" mesh="right_end_link3"/>
+                <geom type="mesh" contype="0" conaffinity="0" group="1" density="1" rgba="0.50196 0.50196 1 1" mesh="right_end_link3"/>
                 <geom type="mesh" rgba="0.50196 0.50196 1 1" mesh="right_end_link3"/>
               </body>
             </body>
@@ -229,7 +236,7 @@
               <body name="left_end_link3">
                 <inertial pos="0.013549 4.0775e-05 -4.5973e-05" quat="0.273553 0.65205 0.306307 0.63732" mass="0.0012596" diaginertia="3.85901e-08 2.95879e-08 2.3009e-08"/>
                 <joint name="left_end_joint3" pos="0 0 0" axis="1 0 0"/>
-                <geom type="mesh" contype="0" conaffinity="0" group="1" density="100" rgba="0 1 1 1" mesh="left_end_link3"/>
+                <geom type="mesh" contype="0" conaffinity="0" group="1" density="1" rgba="0 1 1 1" mesh="left_end_link3"/>
                 <geom type="mesh" rgba="0 1 1 1" mesh="left_end_link3"/>
               </body>
             </body>
@@ -238,8 +245,9 @@
       </body>
     </body>
 
-    <body name="end_platform" pos="0 0 -0.13271" >
+    <body name="end_platform" pos="0 0 0" >
       <freejoint />
+      <site name="end_platform_center" pos=" 0 0 0"  size="0.01"  quat = "1.0 0.0 0.0 0." rgba="0.8 0.8 0.3 1"/>
       <inertial pos="0 0 0" quat="1 0 0 0" mass="0.0125206" diaginertia="4.0858e-06 4.085e-06 2.4932e-09"/>
       <!-- <geom pos="0 0 -0.13271" quat="1 0 0 0" type="mesh" contype="0" conaffinity="0" group="1" density="0" rgba="0.79216 0.81961 0.93333 1" mesh="end_platform"/> -->
       <geom pos="0 0 0" quat="1 0 0 0" type="mesh" rgba="0.79216 0.81961 0.93333 1" mesh="end_platform"/>
@@ -277,10 +285,10 @@
   </equality>  
 
   <actuator>
-    <motor ctrllimited="true" ctrlrange="0.0 1.0" gear="0  0. 2. 0. 0. -0.1" site="motor1"/>
-    <motor ctrllimited="true" ctrlrange="0.0 1.0" gear="0  0. 2. 0. 0.  0.1" site="motor2"/>
-    <motor ctrllimited="true" ctrlrange="0.0 1.0" gear="0  0. 2. 0. 0. -0.1" site="motor3"/>
-    <motor ctrllimited="true" ctrlrange="0.0 1.0" gear="0  0. 2. 0. 0.  0.1" site="motor4"/>
+    <motor ctrllimited="true" ctrlrange="0.0 1.0" gear="0  0 6.5 0. 0. -0.13" site="motor1"/>
+    <motor ctrllimited="true" ctrlrange="0.0 1.0" gear="0  0 6.5 0. 0.  0.13" site="motor2"/>
+    <motor ctrllimited="true" ctrlrange="0.0 1.0" gear="0  0 6.5 0. 0. -0.13" site="motor3"/>
+    <motor ctrllimited="true" ctrlrange="0.0 1.0" gear="0  0 6.5 0. 0.  0.13" site="motor4"/>
     
       
     <position name="armmotor1" joint="motor_arm_joint1" kp="100" kv="10" />
@@ -295,13 +303,17 @@
   </actuator>  
   
   <sensor>
+    <gyro name="body_gyro" site="imu"/>
+    <accelerometer name="body_linacc" site="imu"/>
+    <framequat name="body_quat" objtype="site" objname="imu"/>  
     <!-- 末端平台位置传感器 -->
-    <framepos name="ee_pos" objtype="body" objname="end_platform"/>
+    <!-- <framepos name="ee_pos" objtype="body" objname="end_platform"/>
     <framequat name="ee_quat" objtype="body" objname="end_platform"/>
     <framelinvel name="ee_lin_vel" objtype="body" objname="end_platform"/>
-    <frameangvel name="ee_ang_vel" objtype="body" objname="end_platform"/>
+    <frameangvel name="ee_ang_vel" objtype="body" objname="end_platform"/> -->
   </sensor>  
   <visual>
     <global offwidth="1920" offheight="1680"/>
   </visual>
+
 </mujoco>
