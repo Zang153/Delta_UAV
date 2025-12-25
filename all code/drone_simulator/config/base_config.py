@@ -111,10 +111,11 @@ class ConfigBase(ABC):
         Returns:
             配置对象
         """
+        filepath_str = str(filepath)
         with open(filepath, 'r') as f:
-            if filepath.endswith('.yaml') or filepath.endswith('.yml'):
+            if filepath_str.endswith('.yaml') or filepath_str.endswith('.yml'):
                 config_dict = yaml.safe_load(f)
-            elif filepath.endswith('.json'):
+            elif filepath_str.endswith('.json'):
                 config_dict = json.load(f)
             else:
                 raise ValueError(f"Unsupported file format: {filepath}")
